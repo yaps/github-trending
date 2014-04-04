@@ -15,6 +15,7 @@ func main() {
 	for {
 		dateString := dateString()
 		fmt.Println(dateString)
+		//TODO: use goroutinez
 		scrape("objective-c")
 		scrape("go")
 		scrape("javascript")
