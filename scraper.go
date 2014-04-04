@@ -1,10 +1,10 @@
 package main
 
 import (
-	_ "bufio"
+	"bufio"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	_ "os"
+	"os"
 	"os/exec"
 	_ "strconv"
 	"time"
@@ -13,13 +13,19 @@ import (
 func main() {
 	//loop
 	for {
+
 		dateString := dateString()
-		fmt.Println(dateString)
+		filename := dateString + ".md"
+
+		//create markdown file
+		createMarkDown(dateString, filename)
+
 		//TODO: use goroutinez
-		scrape("objective-c")
-		scrape("go")
-		scrape("javascript")
-		createMarkDown(dateString)
+		scrape("objective-c", filename)
+		scrape("go", filename)
+		scrape("javascript", filename)
+
+		// flushWriter(writer)
 		// gitAddAll()
 		// gitCommit(dateString)
 		// gitPush()
@@ -32,16 +38,50 @@ func dateString() string {
 	return fmt.Sprintf("%s-%d-%d", m.String(), d, y)
 }
 
-func scrape(language string) {
+func createMarkDown(date string, filename string) {
+
+	// open output file
+	fo, err := os.Create(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	// close fo on exit and check for its returned error
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	// make a write buffer
+	w := bufio.NewWriter(fo)
+	w.WriteString("###" + date + "\n")
+	w.Flush()
+	// fo.Close()
+}
+
+func scrape(language string, filename string) {
 	var doc *goquery.Document
 	var e error
+	// var w *bufio.Writer
+
+	f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString(fmt.Sprintf("####%s\n", language)); err != nil {
+		panic(err)
+	}
 
 	if doc, e = goquery.NewDocument(fmt.Sprintf("https://github.com/trending?l=%s", language)); e != nil {
 		panic(e.Error())
 	}
 
 	doc.Find("li.repo-leaderboard-list-item").Each(func(i int, s *goquery.Selection) {
-		// title := s.Find("div h2 a").Text()
+		title := s.Find("div h2 a").Text()
 		owner := s.Find("span.owner-name").Text()
 		repoName := s.Find("strong").Text()
 		url, _ := s.Find("h2 a").Attr("href")
@@ -49,10 +89,16 @@ func scrape(language string) {
 		fmt.Println("owner: ", owner)
 		fmt.Println("repo: ", repoName)
 		fmt.Println("URL: ", url)
+		if _, err = f.WriteString("* [" + title + "](" + url + ")\n"); err != nil {
+			panic(err)
+		}
 	})
 }
 
-func createMarkDown(date string) {}
+func flushWriter(w *bufio.Writer) {
+	w.Flush()
+}
+
 func gitAddAll() {
 	app := "git"
 	arg0 := "add"
