@@ -40,10 +40,14 @@ func scrape(language string) {
 	}
 
 	doc.Find("li.repo-leaderboard-list-item").Each(func(i int, s *goquery.Selection) {
-		title := s.Find("div h2 a").Text()
+		// title := s.Find("div h2 a").Text()
 		owner := s.Find("span.owner-name").Text()
 		repoName := s.Find("strong").Text()
-		fmt.Println(title, owner, repoName)
+		url, _ := s.Find("h2 a").Attr("href")
+		url = "https://github.com" + url
+		fmt.Println("owner: ", owner)
+		fmt.Println("repo: ", repoName)
+		fmt.Println("URL: ", url)
 	})
 }
 
