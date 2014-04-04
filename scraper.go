@@ -82,12 +82,13 @@ func scrape(language string, filename string) {
 		title := s.Find("div h2 a").Text()
 		owner := s.Find("span.owner-name").Text()
 		repoName := s.Find("strong").Text()
+		description := s.Find("p.repo-leaderboard-description").Text()
 		url, _ := s.Find("h2 a").Attr("href")
 		url = "https://github.com" + url
 		fmt.Println("owner: ", owner)
 		fmt.Println("repo: ", repoName)
 		fmt.Println("URL: ", url)
-		if _, err = f.WriteString("* [" + title + "](" + url + ")\n"); err != nil {
+		if _, err = f.WriteString("* [" + title + "](" + url + "): " + description + "\n"); err != nil {
 			panic(err)
 		}
 	})
