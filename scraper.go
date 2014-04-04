@@ -1,35 +1,53 @@
 package main
 
 import (
-	"bufio"
+	_ "bufio"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"os"
+	_ "os"
 	"os/exec"
-	"strconv"
+	_ "strconv"
 	"time"
 )
 
 func main() {
 	//loop
 	for {
-		scrapeObjC()
-		scrapeGo()
-		scrapeJS()
-		createMarkDown()
+		dateString := dateString()
+		fmt.Println(dateString)
+		scrape("objective-c")
+		scrape("go")
+		scrape("javascript")
+		createMarkDown(dateString)
 		gitAddAll()
-		gitCommit()
+		gitCommit(dateString)
 		gitPush()
 		time.Sleep(time.Duration(24) * time.Hour)
 	}
 }
 
-func scrapeObjC() {
-
+func dateString() string {
+	y, m, d := time.Now().Date()
+	return fmt.Sprint("%s-%i-%i", m.String(), d, y)
 }
-func scrapeGo()       {}
-func scrapeJS()       {}
-func createMarkDown() {}
+
+func scrape(language string) {
+	var doc *goquery.Document
+	var e error
+
+	if doc, e = goquery.NewDocument(fmt.Sprintf("https://github.com/trending?l=%s", language)); e != nil {
+		panic(e.Error())
+	}
+
+	doc.Find("li.repo-leaderboard-list-item").Each(func(i int, s *goquery.Selection) {
+		title := s.Find("div h2 a").Text()
+		owner := s.Find("span.owner-name").Text()
+		repoName := s.Find("strong").Text()
+		fmt.Println(title, owner, repoName)
+	})
+}
+
+func createMarkDown(date string) {}
 func gitAddAll() {
 	app := "git"
 	arg0 := "add"
@@ -45,11 +63,11 @@ func gitAddAll() {
 	print(string(out))
 }
 
-func gitCommit(date string, language string) {
+func gitCommit(date string) {
 	app := "git"
 	arg0 := "commit"
 	arg1 := "-am"
-	arg2 := fmt.Sprintf("[%s] %s", language, date)
+	arg2 := date
 	cmd := exec.Command(app, arg0, arg1, arg2)
 	out, err := cmd.Output()
 
