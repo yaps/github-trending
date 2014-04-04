@@ -25,10 +25,9 @@ func main() {
 		scrape("go", filename)
 		scrape("javascript", filename)
 
-		// flushWriter(writer)
-		// gitAddAll()
-		// gitCommit(dateString)
-		// gitPush()
+		gitAddAll()
+		gitCommit(dateString)
+		gitPush()
 		time.Sleep(time.Duration(24) * time.Hour)
 	}
 }
@@ -57,7 +56,6 @@ func createMarkDown(date string, filename string) {
 	w := bufio.NewWriter(fo)
 	w.WriteString("###" + date + "\n")
 	w.Flush()
-	// fo.Close()
 }
 
 func scrape(language string, filename string) {
@@ -93,10 +91,6 @@ func scrape(language string, filename string) {
 			panic(err)
 		}
 	})
-}
-
-func flushWriter(w *bufio.Writer) {
-	w.Flush()
 }
 
 func gitAddAll() {
