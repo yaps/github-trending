@@ -19,16 +19,16 @@ func main() {
 		scrape("go")
 		scrape("javascript")
 		createMarkDown(dateString)
-		gitAddAll()
-		gitCommit(dateString)
-		gitPush()
+		// gitAddAll()
+		// gitCommit(dateString)
+		// gitPush()
 		time.Sleep(time.Duration(24) * time.Hour)
 	}
 }
 
 func dateString() string {
 	y, m, d := time.Now().Date()
-	return fmt.Sprint("%s-%i-%i", m.String(), d, y)
+	return fmt.Sprintf("%s-%d-%d", m.String(), d, y)
 }
 
 func scrape(language string) {
