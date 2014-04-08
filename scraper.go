@@ -25,6 +25,7 @@ func main() {
 		scrape("go", filename)
 		scrape("javascript", filename)
 
+		gitPull()
 		gitAddAll()
 		gitCommit(dateString)
 		gitPush()
@@ -92,6 +93,21 @@ func scrape(language string, filename string) {
 			panic(err)
 		}
 	})
+}
+func gitPull() {
+	app := "git"
+	arg0 := "pull"
+	arg1 := "origin"
+	arg2 := "master"
+	cmd := exec.Command(app, arg0, arg1, arg2)
+	out, err := cmd.Output()
+
+	if err != nil {
+		println(err.Error())
+		return
+	}
+
+	print(string(out))
 }
 
 func gitAddAll() {
