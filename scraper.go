@@ -29,13 +29,14 @@ func main() {
 		gitAddAll()
 		gitCommit(dateString)
 		gitPush()
+
 		time.Sleep(time.Duration(24) * time.Hour)
 	}
 }
 
 func dateString() string {
 	y, m, d := time.Now().Date()
-	return fmt.Sprintf("%s-%d-%d", m.String(), d, y)
+	return fmt.Sprintf("%d-%d-%d", y, m, d)
 }
 
 func createMarkDown(date string, filename string) {
