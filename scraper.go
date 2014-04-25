@@ -36,7 +36,16 @@ func main() {
 
 func dateString() string {
 	y, m, d := time.Now().Date()
-	return fmt.Sprintf("%d-%d-%d", y, m, d)
+	mStr := string(m)
+	dStr := string(d)
+	if m < 10 {
+		mStr = "0" + string(m)
+	}
+	if d < 10 {
+		dStr = "0" + string(d)
+	}
+	return fmt.Sprintf("%d-%s-%s", y, mStr, dStr)
+
 }
 
 func createMarkDown(date string, filename string) {
