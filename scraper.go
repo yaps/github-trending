@@ -36,13 +36,13 @@ func main() {
 
 func dateString() string {
 	y, m, d := time.Now().Date()
-	mStr := string(m)
-	dStr := string(d)
+	mStr := fmt.Sprintf("%d", m)
+	dStr := fmt.Sprintf("%d", d)
 	if m < 10 {
-		mStr = "0" + string(m)
+		mStr = fmt.Sprintf("0%d", m)
 	}
 	if d < 10 {
-		dStr = "0" + string(d)
+		dStr = fmt.Sprintf("0%d", d)
 	}
 	return fmt.Sprintf("%d-%s-%s", y, mStr, dStr)
 
