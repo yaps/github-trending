@@ -24,6 +24,7 @@ func main() {
 		scrape("objective-c", filename)
 		scrape("go", filename)
 		scrape("javascript", filename)
+		scrape("ruby", filename)
 
 		gitPull()
 		gitAddAll()
