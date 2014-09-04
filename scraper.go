@@ -94,7 +94,7 @@ func scrape(language string, filename string) {
 		owner := s.Find("span.prefix").Text()
 		repoName := s.Find("span.slash").Text()
 		description := s.Find("p.repo-list-description").Text()
-		url, _ := s.Find(".repo-list-meta a").Attr("href")
+		url, _ := s.Find("h3 a").Attr("href")
 		url = "https://github.com" + url
 		fmt.Println("owner: ", owner)
 		fmt.Println("repo: ", repoName)
