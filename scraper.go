@@ -89,12 +89,12 @@ func scrape(language string, filename string) {
 		panic(e.Error())
 	}
 
-	doc.Find("li.repo-leaderboard-list-item").Each(func(i int, s *goquery.Selection) {
-		title := s.Find("div h2 a").Text()
-		owner := s.Find("span.owner-name").Text()
-		repoName := s.Find("strong").Text()
-		description := s.Find("p.repo-leaderboard-description").Text()
-		url, _ := s.Find("h2 a").Attr("href")
+	doc.Find("li.repo-list-item").Each(func(i int, s *goquery.Selection) {
+		title := s.Find("h3 a").Text()
+		owner := s.Find("span.prefix").Text()
+		repoName := s.Find("span.slash").Text()
+		description := s.Find("p.repo-list-description").Text()
+		url, _ := s.Find(".repo-list-meta a").Attr("href")
 		url = "https://github.com" + url
 		fmt.Println("owner: ", owner)
 		fmt.Println("repo: ", repoName)
