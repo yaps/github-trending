@@ -92,7 +92,7 @@ func scrape(language string, filename string) {
 	doc.Find("li.repo-list-item").Each(func(i int, s *goquery.Selection) {
 		title := s.Find("h3 a").Text()
 		owner := s.Find("span.prefix").Text()
-		repoName := s.Find("span.slash").Text()
+		repoName := s.Find("h3").Text()
 		description := s.Find("p.repo-list-description").Text()
 		url, _ := s.Find("h3 a").Attr("href")
 		url = "https://github.com" + url
