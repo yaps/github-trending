@@ -26,7 +26,7 @@ func main() {
 		scrape("javascript", filename)
 		scrape("ruby", filename)
 
-		gitPull()
+		//gitPull()
 		gitAddAll()
 		gitCommit(dateString)
 		gitPush()
