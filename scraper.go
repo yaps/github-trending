@@ -21,6 +21,7 @@ func main() {
 		createMarkDown(dateString, filename)
 
 		//TODO: use goroutinez
+		scrape("swift", filename)
 		scrape("objective-c", filename)
 		scrape("go", filename)
 		scrape("javascript", filename)
