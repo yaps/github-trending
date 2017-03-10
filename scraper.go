@@ -6,6 +6,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"os"
 	"os/exec"
+	"strings"
 	_ "strconv"
 	"time"
 )
@@ -92,12 +93,13 @@ func scrape(language string, filename string) {
 	}
 
 	doc.Find("ol.repo-list li").Each(func(i int, s *goquery.Selection) {
-		title := s.Find("h3 a").Text()
+		title := strings.TrimSpace(s.Find("h3 a").Text())
 		owner := s.Find("span.prefix").Text()
 		description := s.Find("p.col-9").Text()
 		url, _ := s.Find("h3 a").Attr("href")
 		url = "https://github.com" + url
 		ownerImg, _ := s.Find("p.repo-list-meta a img").Attr("src")
+		fmt.Println("title: ", title)
 		fmt.Println("owner: ", owner)
 		fmt.Println("URL: ", url)
 		fmt.Println("Owner Img: ", ownerImg)
