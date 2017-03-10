@@ -104,6 +104,7 @@ func scrape(language string, filename string) {
 		fmt.Println("URL: ", url)
 		fmt.Println("Owner Img: ", ownerImg)
 		if _, err = f.WriteString("* [" + title + "](" + url + "): " + description + "\n"); err != nil {
+			println(err.Error())
 			panic(err)
 		}
 	})
